@@ -1,6 +1,4 @@
 .vscode
-csv/*
-log/*
 archive/*
 node_modules
 db/master.db
