@@ -1,0 +1,8 @@
+.vscode
+csv/*
+log/*
+archive/*
+node_modules
+db/master.db
+db/development.db
+package-lock.json

@@ -19,14 +19,17 @@ var udpPort;
 var httpPort;
 var dbFile;
 
+// parseInt(process.env.DEV_DB_PORT) || 27017,
+//    name: process.env.DEV_DB_NAME || 'db'
+
 if(global.DEVMODE == 0) {
     dbFile = "./db/master.db";
-    udpPort       = 57005;
-    httpPort      = 8080;
+    udpPort       = parseInt(process.env.TS_UDP_PORT) || 57005;
+    httpPort      = parseInt(process.env.TS_HTTP_PORT) || 8080;
 } else {
     dbFile = "./db/development.db";
-    udpPort       = 12345;
-    httpPort      = 8081;
+    udpPort       = parseInt(process.env.TS_UDP_PORT) || 12345;
+    httpPort      = parseInt(process.env.TS_HTTP_PORT) || 8081;
 }
 
 
