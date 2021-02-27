@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Plotter</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script>
+
+    function toggleForm(formName) {
+
+        var i;
+
+        var formList = document.getElementsByClassName("form");
+        var formMenu = document.getElementById(formName);
+
+        // loop through all forms to close currently open form if one is open
+        for (i = 0; i < formList.length; i++) {
+            
+            // do not process the form to toggle
+            if(formMenu == formList[i]) {
+                continue;
+            }
+
+            // if form is open, close
+            if(formList[i].className.indexOf("w3-show") != -1) {
+                formList[i].className = formList[i].className.replace(" w3-show", "");
+            }
+
+        }
+
+        // toggle form
+        if (formMenu.className.indexOf("w3-show") == -1) { 
+            formMenu.className += " w3-show";
+        } else {
+            formMenu.className = formMenu.className.replace(" w3-show", "");
+        }
+    }
+
+</script>
+
+<body>
+
+<!-- Navigation -->
+<div class="w3-bar w3-border w3-light-blue">
+    <a href="/" class="w3-bar-item w3-button w3-hover-blue">Today</a>
+    <form action="/" method="POST">
+        <input type="hidden" name="method" value="direct">
+        <input type="hidden" name="value"  value="last24">
+        <button class="w3-bar-item w3-button w3-hover-blue">24 Hours</button>
+    </form>
+    <form action="/" method="POST">
+        <input type="hidden" name="method" value="direct">
+        <input type="hidden" name="value"  value="all">
+        <button class="w3-bar-item w3-button w3-hover-blue">All</button>
+    </form>
+    <form action="/" method="POST">
+        <input type="hidden" name="method" value="direct">
+        <input type="hidden" name="value"  value="csv">
+        <button class="w3-bar-item w3-button w3-hover-blue">CSV</button>
+    </form>
+    <div class="w3-dropdown-click w3-hover-blue">
+        <button onclick="toggleForm('Span')" class="w3-button w3-hover-blue">Span</button> 
+        <div id="Span" class="w3-dropdown-content w3-bar-block w3-border form">
+            <form action="/" method="POST" class="w3-container w3-padding w3-light-grey">
+                <input type="hidden" name="method" value="span">
+                <input class="w3-input w3-border w3-round" type="number" name="count" min=1 value=1>
+                <select class="w3-select w3-border w3-round" name="span">
+                    <option value="hours">Hours</option>
+                    <option value="days">Days</option>
+                    <option value="weeks">Weeks</option>
+                    <option value="months">Months</option>
+                    <option value="years">Years</option>
+                </select>
+                <div class="w3-center">
+                    <button class="w3-button w3-block w3-light-blue w3-hover-blue w3-round">Plot</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+
+    <div class="w3-dropdown-click w3-hover-blue">
+        <button onclick="toggleForm('Day')" class="w3-button w3-hover-blue">Date</button>
+        
+        <div id="Day" class="w3-dropdown-content w3-bar-block w3-border form">
+            <form action="/" method="POST" class="w3-container w3-padding w3-light-grey">
+                <input type="hidden" name="method" value="day">
+                <input class="w3-input w3-border w3-round" type="date" name="date" min="<%= mindate.format('YYYY-MM-DD'); %>" max="<%= dayjs().format('YYYY-MM-DD'); %>" value="<%= dayjs().format('YYYY-MM-DD'); %>" required>
+                <div class="w3-center">
+                    <button class="w3-button w3-block w3-light-blue w3-hover-blue w3-round">Plot</button>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+
+    <div class="w3-dropdown-click w3-hover-blue">
+        <button onclick="toggleForm('Month')" class="w3-button w3-hover-blue">Month</button>
+        
+        <div id="Month" class="w3-dropdown-content w3-bar-block w3-border form">
+            <form action="/" method="POST" class="w3-container w3-padding w3-light-grey">
+                <input type="hidden" name="method" value="month">
+                <input class="w3-input w3-border w3-round" type="month" name="date" min="<%= mindate.format('YYYY-MM'); %>" max="<%= dayjs().format('YYYY-MM'); %>" value="<%= dayjs().format('YYYY-MM'); %>" required>
+                <div class="w3-center">
+                    <button class="w3-button w3-block w3-light-blue w3-hover-blue w3-round">Plot</button>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+
+    <div class="w3-dropdown-click">
+        <button onclick="toggleForm('Range')" class="w3-button w3-hover-blue">Range</button>
+        
+        <div id="Range" class="w3-dropdown-content w3-border form">
+            <form action="/" method="POST" class="w3-padding w3-light-grey">
+                <input type="hidden" name="method" value="range">
+                <label>Start Date :: End Date</label>
+                <input class="w3-input w3-border w3-round" type="date" name="startdate" min="<%= mindate.format('YYYY-MM-DD'); %>" max="<%= dayjs().format('YYYY-MM-DD'); %>" required>
+                <input class="w3-input w3-border w3-round" type="date" name="enddate" min="<%= mindate.format('YYYY-MM-DD'); %>" max="<%= dayjs().format('YYYY-MM-DD'); %>" required>
+                <div class="w3-center">
+                    <button class="w3-button w3-block w3-light-blue w3-hover-blue w3-round">Plot</button>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+
+    <div class="w3-bar-item w3-light-gray w3-right">Current Temp: <span class="w3-text-indigo"><%= currentTemp %></span></div>
+
+</div>
+
+<div class="w3-padding-small"></div>
+
+<div class="w3-container w3-center">
+<div class="w3-card w3-border">
+    <div class="w3-container w3-blue">
+        <h4><%= header %></h4>
+    </div>
+    <img class="w3-padding" src="<%= plotpath %>" alt="Plot" style="width:85%">
+    <!-- <embed src="<%= plotpath %>" type="image/svg+xml"/> -->
+
+    <div class="w3-container w3-padding-small w3-blue">
+
+        <div class="w3-tag w3-padding-small w3-light-gray">Max: <span class="w3-text-red"><%= footerdata.max.maxTemp %></span> @ <%= footerdata.max.maxDate %></div>
+        <div class="w3-tag w3-padding-small w3-light-gray">Min: <span class="w3-text-blue"><%= footerdata.min.minTemp %></span> @ <%= footerdata.min.minDate %></div>        
+     
+    </div>
+
+</div>
+</div>
+
+
+</body>
+</html>
